@@ -151,14 +151,18 @@
 
 .grok-composer-wrap { position: relative; padding: 10px clamp(14px, 5vw, 70px) max(14px, env(safe-area-inset-bottom)); border-top: 1px solid var(--grok-line); background: var(--grok-canvas); }
 .grok-composer { display: flex; min-height: 48px; align-items: flex-end; gap: 4px; width: min(800px, 100%); margin: 0 auto; padding: 4px 4px 4px 6px; border: 1px solid var(--grok-line-strong); border-radius: 25px; background: var(--grok-raised); }
-.grok-composer:focus-within { border-color: color-mix(in srgb, var(--grok-blue) 56%, var(--grok-line-strong)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--grok-blue) 11%, transparent); }
+.grok-composer:focus-within { border-color: color-mix(in srgb, var(--grok-blue) 56%, var(--grok-line-strong)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--grok-blue) 11%, transparent); }
 .grok-composer-button, .grok-send-button { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border-radius: 20px; background: transparent; color: var(--grok-soft-ink); }
 .grok-composer-button:hover { background: var(--grok-soft); color: var(--grok-ink); }
 .grok-composer-button span { font-size: 18px; font-weight: 500; line-height: 1; }
 .grok-composer-button.is-active { background: color-mix(in srgb, var(--grok-blue) 12%, transparent); color: var(--grok-blue); }
 .grok-composer textarea { min-width: 0; min-height: 40px; max-height: 140px; flex: 1; resize: none; padding: 9px 6px; border: 0; outline: 0; background: transparent; color: var(--grok-ink); font-size: 14px; line-height: 1.4; }
+.grok-composer textarea:focus-visible { outline: none; }
 .grok-composer textarea::placeholder { color: var(--grok-muted-ink); }
 .grok-composer-hint { align-self: center; color: var(--grok-muted-ink); font-size: 10px; white-space: nowrap; }
+.grok-mic-button { color: var(--grok-muted-ink); }
+.grok-mic-button:hover:not(:disabled) { background: color-mix(in srgb, var(--grok-blue) 10%, transparent); color: var(--grok-blue); }
+.grok-mic-button:disabled { opacity: .45; }
 .grok-send-button { background: var(--grok-ink); color: var(--grok-canvas); transition: transform 140ms ease, background-color 140ms ease; }
 .grok-send-button:hover:not(:disabled) { transform: translateY(-1px); background: var(--grok-blue); color: #fff; }
 .grok-send-button.is-stop { background: #bd3434; color: #fff; }
@@ -447,6 +451,12 @@
 
 .hermes-request-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; width: min(720px, calc(100% - 32px)); margin: 8px auto 14px; padding: 13px; border: 1px solid var(--grok-line-strong); border-radius: 12px; background: color-mix(in srgb, var(--grok-raised) 92%, var(--grok-blue)); }
 .hermes-request-card.hermes-request-completed { background: var(--grok-raised); }
+.hermes-request-card.hermes-request-completed { margin-top: 5px; margin-bottom: 8px; padding-top: 10px; padding-bottom: 10px; }
+.hermes-request-card.hermes-request-completed .hermes-request-icon { width: 26px; height: 26px; }
+.hermes-request-card.hermes-request-completed .hermes-request-heading strong { font-size: 11px; }
+.hermes-request-card.hermes-request-completed .hermes-request-actions { margin-top: 7px; }
+.hermes-request-details { display: grid; gap: 8px; }
+.hermes-request-details strong { color: var(--grok-soft-ink); font-size: 10px; font-weight: 680; }
 .hermes-request-icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 9px; background: color-mix(in srgb, var(--grok-blue) 12%, transparent); color: var(--grok-blue); }
 .hermes-request-private_input .hermes-request-icon { background: color-mix(in srgb, var(--grok-green) 13%, transparent); color: var(--grok-green); }
 .hermes-request-connector_action .hermes-request-icon { background: color-mix(in srgb, #bd3434 10%, transparent); color: #bd3434; }

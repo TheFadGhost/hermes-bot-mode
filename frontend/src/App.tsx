@@ -316,6 +316,21 @@ function App(): JSX.Element {
   const [signOutError, setSignOutError] = useState<string | null>(null);
 
   useEffect(() => {
+    // A new Telegram link can change only the URL fragment in an existing tab.
+    // Reload before showing any conversation from the previous account.
+    const onHash = () => { if (getNonceFromHash()) window.location.reload(); };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === "hermes-auth-change") window.location.reload();
+    };
+    window.addEventListener("hashchange", onHash);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("hashchange", onHash);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+
+  useEffect(() => {
     document.documentElement.dataset.theme = theme;
     try {
       window.localStorage.setItem("hermes-theme", theme);
@@ -357,6 +372,8 @@ function App(): JSX.Element {
 
   const exchangeLoginLink = async (nonce: string): Promise<void> => {
     setAuthError(null);
+    setSession(null);
+    setAuthState("loading");
     try {
       const result = await exchangeTelegramNonce(nonce);
       if (isAuthenticated(result)) {
@@ -364,9 +381,11 @@ function App(): JSX.Element {
         setAuthState("signed-in");
       } else {
         setAuthError("That sign-in link did not authenticate this session.");
+        setAuthState("signed-out");
       }
     } catch (error) {
       setAuthError(errorMessage(error));
+      setAuthState("signed-out");
     }
   };
 
@@ -404,7 +423,7 @@ function App(): JSX.Element {
   if (authState === "error") return <LoginScreen error={authError} onRetry={retryAuth} onExchangeLink={exchangeLoginLink} />;
   if (authState === "signed-out" || !session) return <LoginScreen error={authError} onRetry={retryAuth} onExchangeLink={exchangeLoginLink} />;
 
-  return <GrokWorkspace session={session} theme={theme} onThemeChange={setTheme} onLogout={signOut} logoutError={signOutError} />;
+  return <GrokWorkspace key={session.user?.id ?? "account"} session={session} theme={theme} onThemeChange={setTheme} onLogout={signOut} logoutError={signOutError} />;
 }
 
 function LoadingScreen(): JSX.Element {

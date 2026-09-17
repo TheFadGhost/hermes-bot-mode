@@ -73,7 +73,6 @@ def test_nonce_request_uses_exact_loopback_contract(monkeypatch):
     assert result.startswith("Open Dad Bot Mode:\nhttps://")
     url, kwargs = calls["post"]
     assert url == gateway_bot_mode.DEFAULT_INTERNAL_URL
-    assert kwargs["json"] == {"user_id": "42"}
+    assert kwargs["json"] == {"user_id": "42", "chat_id": "42"}
     assert kwargs["headers"] == {"X-Bot-Internal-Secret": "s" * 40}
-
 

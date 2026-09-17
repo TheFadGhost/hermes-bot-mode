@@ -173,11 +173,13 @@ export async function exchangeTelegramNonce(nonce: string): Promise<Session> {
     method: "POST",
     body: JSON.stringify({ nonce }),
   });
+  try { window.localStorage.setItem("hermes-auth-change", crypto.randomUUID()); } catch { /* Storage may be disabled. */ }
   return normalizeSession(value);
 }
 
 export async function logout(): Promise<void> {
   await request<void>("/auth/logout", { method: "POST" });
+  try { window.localStorage.setItem("hermes-auth-change", crypto.randomUUID()); } catch { /* Storage may be disabled. */ }
 }
 
 export async function listAgents(): Promise<Agent[]> {

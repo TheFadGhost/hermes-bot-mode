@@ -153,7 +153,7 @@ async def handle_bot_mode_command(event) -> str:
         async with aiohttp.ClientSession(timeout=timeout) as client:
             async with client.post(
                 internal_url,
-                json={"user_id": user_id},
+                json={"user_id": user_id, "chat_id": user_id},
                 headers={"X-Bot-Internal-Secret": internal_secret},
             ) as response:
                 if response.status < 200 or response.status >= 300:
@@ -175,5 +175,5 @@ async def handle_bot_mode_command(event) -> str:
     if not _public_link_is_safe(link):
         logger.error("Bot mode nonce response did not contain a valid public URL")
         return "Bot mode is unavailable because its public URL is not configured."
-    return f"Open Dad Bot Mode:\n{link}\n\n{_expiry_hint(payload)}"
+    return f"Open your private Bot Mode:\n{link}\n\nThis link signs in to your Telegram account's own chats. Do not forward it.\n{_expiry_hint(payload)}"
 

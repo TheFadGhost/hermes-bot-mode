@@ -90,6 +90,16 @@ function payloadText(value: unknown): string | null {
   }
 }
 
+function humanizeRequestTitle(value: string | null | undefined): string {
+  const source = value?.trim();
+  if (!source) return "Action request";
+  if (!/^[A-Z0-9][A-Z0-9 _-]*$/.test(source)) return source;
+  const words = source.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase().split(" ");
+  if (["github", "google", "microsoft", "slack", "notion"].includes(words[0] ?? "")) words.shift();
+  const sentence = words.join(" ");
+  return sentence ? `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}`.replace(/\bgithub\b/gi, "GitHub") : "Action request";
+}
+
 function formatDate(value?: string | number | null): string {
   if (value === undefined || value === null || value === "") return "";
   const numeric = typeof value === "number" || /^\d+(?:\.\d+)?$/.test(String(value)) ? Number(value) : Number.NaN;
@@ -170,6 +180,7 @@ export function RequestCard({ request, accountId, agentName, onPrivate, onConnec
   const safeDestination = textValue(request.data, ["destination", "service", "toolkit_name", "toolkit"]);
   const safeAccount = textValue(request.data, ["account_name", "account", "connected_account"]);
   const safeTool = textValue(request.data, ["tool_name", "tool_slug", "tool", "action"]);
+  const displayTitle = humanizeRequestTitle(request.title || safeTool);
   const safeArguments = ["arguments", "redacted_arguments", "args", "parameters"].map((key) => request.data[key]).map(payloadText).find((value): value is string => Boolean(value));
   const safeResult = payloadText(request.result);
   const fields = Array.isArray(request.data.private_fields) ? request.data.private_fields.flatMap((item) => {
@@ -181,17 +192,18 @@ export function RequestCard({ request, accountId, agentName, onPrivate, onConnec
   const statusLabel = request.status === "pending" ? "Needs you" : request.status === "ready" ? "Ready for approval" : request.status === "executing" ? "Working" : request.status[0]?.toUpperCase() + request.status.slice(1);
   const expires = formatDate(request.expires_at);
   const isCompleted = ["completed", "denied", "expired", "failed", "uncertain"].includes(request.status);
-  return <article className={`hermes-request-card hermes-request-${request.status}`} aria-label={request.title}>
+  const hasDetails = Boolean(safeArguments || safeResult);
+  return <article className={`hermes-request-card hermes-request-${request.status}`} aria-label={displayTitle}>
     <div className="hermes-request-icon" aria-hidden="true">{request.kind === "private_input" ? <LockKeyhole size={17} /> : request.kind === "connection" ? <Link2 size={17} /> : <ShieldCheck size={17} />}</div>
     <div className="hermes-request-body">
-      <div className="hermes-request-heading"><strong>{request.title}</strong><span>{statusLabel}</span></div>
-      {request.purpose ? <p>{request.purpose}</p> : null}
-      {safeDestination || safeAccount || safeTool ? <div className="hermes-request-meta">{safeDestination ? <span>{safeDestination}</span> : null}{safeAccount ? <span>{safeAccount}</span> : null}{safeTool ? <span>{safeTool}</span> : null}</div> : null}
-      {fields.length ? <p className="hermes-request-fields">Uses labelled private fields: {fields.join(", ")}</p> : null}
-      {request.kind === "connector_action" && safeArguments ? <div className="hermes-request-arguments"><strong>Review before approving</strong><pre>{safeArguments}</pre></div> : null}
+      <div className="hermes-request-heading"><strong>{displayTitle}</strong><span>{statusLabel}</span></div>
+      {pending && request.purpose ? <p>{request.purpose}</p> : null}
+      {pending && (safeDestination || safeAccount || safeTool) ? <div className="hermes-request-meta">{safeDestination ? <span>{safeDestination}</span> : null}{safeAccount ? <span>{safeAccount}</span> : null}{safeTool ? <span>Tool: {humanizeRequestTitle(safeTool)}</span> : null}</div> : null}
+      {pending && fields.length ? <p className="hermes-request-fields">Uses labelled private fields: {fields.join(", ")}</p> : null}
+      {pending && request.kind === "connector_action" && safeArguments ? <div className="hermes-request-arguments"><strong>Review before approving</strong><pre>{safeArguments}</pre></div> : null}
       {expires && pending ? <small className="hermes-request-expiry">Available until {expires}</small> : null}
       {request.error ? <p className="hermes-expansion-error" role="alert">{request.error}</p> : null}
-      {isCompleted && safeResult ? <Disclosure accountId={accountId} section="request" id={request.id} label="result"><pre className="hermes-safe-result">{safeResult}</pre></Disclosure> : null}
+      {isCompleted && hasDetails ? <Disclosure accountId={accountId} section="request" id={request.id} label={safeArguments ? "details" : "result"}><div className="hermes-request-details">{safeArguments ? <div><strong>Arguments</strong><pre className="hermes-safe-result">{safeArguments}</pre></div> : null}{safeResult ? <div><strong>Result</strong><pre className="hermes-safe-result">{safeResult}</pre></div> : null}</div></Disclosure> : null}
       {pending ? <div className="hermes-request-actions">{request.kind === "private_input" ? <button className="hermes-expansion-button hermes-expansion-button-primary" type="button" onClick={() => onPrivate(request)}><LockKeyhole size={14} /> Enter value</button> : request.kind === "connection" ? <button className="hermes-expansion-button hermes-expansion-button-primary" type="button" onClick={() => onConnection(request)}><Link2 size={14} /> Connect</button> : <><button className="hermes-expansion-button hermes-expansion-button-primary" type="button" onClick={() => onDecision(request, "approve")}><Check size={14} /> Approve</button><button className="hermes-expansion-button" type="button" onClick={() => onDecision(request, "deny")}>Decline</button></>}</div> : request.status === "completed" ? <div className="hermes-request-actions"><button className="hermes-expansion-button hermes-expansion-button-primary" type="button" onClick={() => onContinue(request)}><ChevronRight size={14} /> Continue with {agentName ?? "this Bot"}</button></div> : null}
     </div>
   </article>;

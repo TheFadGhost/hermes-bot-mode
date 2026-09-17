@@ -12,17 +12,18 @@ Bot Mode is a self-hostable messenger for persistent AI Bots, durable conversati
 
 ## Setup
 
-Read [docs/public-setup.md](docs/public-setup.md), then configure a private environment file from `backend/.env.example` or `integration/bot-mode.env.example`. Use an HTTPS origin for remote access and generate independent random session/internal secrets. Keep the data volume outside the checkout.
+Read [docs/public-setup.md](docs/public-setup.md), then configure a private environment file from `backend/.env.example` or `integration/bot-mode.env.example`. Create the data directory with `sudo install -d -o 10001 -g 10001 -m 700 /var/lib/hermes-bot-mode`. Generate each secret with `python3 -c 'import secrets; print(secrets.token_urlsafe(32))'`, using different values for `BOT_SESSION_SECRET` and `BOT_INTERNAL_SECRET`. Keep the private environment file and data volume outside the checkout.
 
 For a local operator login after the service is running:
 
 ```sh
-PYTHONPATH=backend python integration/scripts/operator-login.py --user-id YOUR_OWNER_ID
+OWNER_ID=your-stable-owner-id
+docker exec -i dad-bot-mode python - --user-id "$OWNER_ID" < integration/scripts/operator-login.py
 ```
 
-The link is one-use and short-lived. Do not print it in logs or share it. Telegram sign-in is optional; when the bridge is configured, use the documented `/bot` flow instead.
+The link is one-use and short-lived. Do not print it in logs or share it. Use the Telegram numeric user ID when the optional bridge is enabled; otherwise choose a stable private owner ID. Telegram sign-in is optional; when the bridge is configured, use the documented `/bot` flow instead.
 
-The Compose template runs the service as its configured container user and mounts a dedicated data directory at `/data`. On a host deployment, create that directory with the UID/GID required by the image and keep ownership consistent; do not reuse a personal home directory or bind mount unrelated files. Desktop automation requires Docker, the desktop image, and its supervisor configuration.
+The Compose template runs the service as UID/GID 10001 and mounts `/var/lib/hermes-bot-mode` at `/data`. On a host deployment, create that directory with `sudo install -d -o 10001 -g 10001 -m 700 /var/lib/hermes-bot-mode`; do not reuse a personal home directory or bind mount unrelated files. Desktop automation requires Docker, the desktop image, and its supervisor configuration.
 
 ## License
 

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-bot-mode-backend"
+version = "0.1.0"
+description = "Authenticated persistence and API foundation for Hermes bot mode"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.110,<1",
+  "uvicorn[standard]>=0.29,<1",
+  "python-multipart>=0.0.9,<1",
+  "httpx>=0.27,<1",
+  "websockets>=13,<17",
+  "pypdf>=6.0,<7",
+  "defusedxml>=0.7,<1",
+  "tzdata>=2025.1",
+  "cryptography>=43,<48",
+  "jsonschema>=4.20,<5",
+]
+
+[project.optional-dependencies]
+test = ["httpx>=0.27,<1", "pytest>=8,<9", "pytest-asyncio>=0.23,<1"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+

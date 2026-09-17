@@ -1,0 +1,15 @@
+.git
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.venv
+**/*.egg-info
+**/data
+**/*.sqlite*
+**/.env
+frontend/dist
+
+design-research
+skills/*
+!skills/slopmonster
+frontend/scripts

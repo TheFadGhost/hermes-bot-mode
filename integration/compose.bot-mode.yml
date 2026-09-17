@@ -1,0 +1,58 @@
+services:
+  dad-bot-mode:
+    build:
+      # Resolve the context from this integration directory.  The production
+      # checkout lives at /opt/hermes-bot-mode, while the compose file remains in
+      # its integration/ subdirectory.
+      context: ..
+      dockerfile: integration/Dockerfile
+      args:
+        CODEX_CLI_VERSION: "0.154.0"
+    image: dad-bot-mode:local
+    container_name: dad-bot-mode
+    restart: unless-stopped
+    network_mode: host
+    cpus: "0.75"
+    mem_limit: 2g
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
+    environment:
+      BOT_ENV: production
+      BOT_RUNTIME: ${BOT_RUNTIME:-codex}
+      BOT_HERMES_AUTH_BRIDGE: "true"
+      BOT_BIND_HOST: 127.0.0.1
+      BOT_BIND_PORT: "9120"
+      BOT_DATABASE_PATH: /data/bot-mode.sqlite3
+      BOT_WORKSPACE_ROOT: /data/workspaces
+      BOT_PUBLIC_BASE_URL: ${BOT_PUBLIC_BASE_URL:-https://your-hermes-origin.example}
+      BOT_ALLOWED_ORIGINS: ${BOT_ALLOWED_ORIGINS:-https://your-hermes-origin.example}
+      BOT_COOKIE_SECURE: "true"
+      BOT_SESSION_SECRET: ${BOT_SESSION_SECRET:?set BOT_SESSION_SECRET in the deployment environment}
+      BOT_INTERNAL_SECRET: ${BOT_INTERNAL_SECRET:?set BOT_INTERNAL_SECRET in the deployment environment}
+      BOT_DEFAULT_MODEL: ${BOT_DEFAULT_MODEL:-gpt-5.6-luna}
+      BOT_COMPACT_TOKENS: ${BOT_COMPACT_TOKENS:-32000}
+      BOT_CODEX_COMMAND: ${BOT_CODEX_COMMAND:-codex app-server}
+      BOT_DESKTOP_SECRET: ${BOT_DESKTOP_SECRET:-}
+      BOT_TELEGRAM_BRIDGE_OWNER_ID: ${BOT_TELEGRAM_BRIDGE_OWNER_ID:-}
+      BOT_TELEGRAM_BRIDGE_SECRET: ${BOT_TELEGRAM_BRIDGE_SECRET:-}
+      BOT_PROVIDER_KEYS_FILE: /data/provider-keys.json
+      BOT_DESKTOP_URL: ${BOT_DESKTOP_URL:-http://127.0.0.1:9121}
+      CODEX_HOME: /data/codex
+      CODEX_CLI: /usr/local/bin/codex
+    volumes:
+      - /var/lib/hermes-bot-mode:/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:9120/bot/api/healthz', timeout=2)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+

@@ -1,0 +1,9 @@
+name: bot-mode-bridge
+version: 1.0.0
+description: "Owner-only Telegram access to Bot Mode jobs and shared memory."
+kind: backend
+provides_tools:
+  - bot_mode
+  - bot_mode_memory
+  - bot_mode_history
+

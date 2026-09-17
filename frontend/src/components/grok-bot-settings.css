@@ -1,0 +1,67 @@
+.grok-bot-settings { min-width: 0; padding: 16px 18px; border: 1px solid var(--grok-line); border-radius: 13px; background: var(--grok-raised); color: var(--grok-ink); }
+.grok-settings-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.grok-settings-title h3 { margin: 0; font-size: 15px; font-weight: 620; }
+.grok-settings-title p { margin: 5px 0 0; font-size: 12px; line-height: 1.45; color: var(--grok-soft-ink); }
+.grok-settings-title > svg { flex: 0 0 auto; color: var(--grok-muted-ink); }
+.grok-bot-settings > p { margin: 8px 0 12px; font-size: 13px; line-height: 1.5; color: var(--grok-soft-ink); overflow-wrap: anywhere; }
+.grok-settings-description { margin: 0; overflow-wrap: anywhere; }
+.grok-bot-settings button, .grok-bot-settings a { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border-radius: 9px; background: var(--grok-soft); color: var(--grok-ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+.grok-bot-settings button:hover, .grok-bot-settings a:hover { filter: brightness(.96); }
+.grok-bot-settings fieldset { display: grid; gap: 9px; min-width: 0; margin: 14px 0 0; padding: 0; border: 0; }
+.grok-bot-settings label { margin-top: 7px; font-size: 13px; font-weight: 600; }
+.grok-bot-settings input, .grok-bot-settings textarea, .grok-bot-settings select { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--grok-line-strong); border-radius: 8px; padding: 10px; background: var(--grok-canvas); color: var(--grok-ink); font: inherit; font-size: 14px; }
+.grok-bot-settings textarea { resize: vertical; line-height: 1.5; }
+.grok-bot-settings details { margin-top: 9px; }
+.grok-bot-settings summary { padding: 10px 0 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.grok-bot-settings details label { display: block; margin-bottom: 7px; }
+.grok-settings-preview { display: flex; justify-content: center; padding: 10px; }
+.grok-settings-swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+.grok-settings-swatches button { padding: 4px; background: transparent; }
+.grok-settings-swatches button[aria-pressed="true"] { outline: 2px solid var(--grok-blue); outline-offset: -3px; }
+.grok-settings-swatches span { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; color: white; }
+.grok-settings-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.grok-bot-settings .grok-settings-primary { background: var(--grok-ink); color: var(--grok-canvas); }
+.grok-bot-settings .grok-settings-success { display: inline-flex; gap: 6px; align-items: center; color: var(--grok-green); font-size: 12px; }
+.grok-bot-settings .grok-settings-error { color: var(--danger, #b3261e); }
+.grok-settings-code { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0; }
+.grok-settings-code code { font-size: 21px; letter-spacing: .04em; overflow-wrap: anywhere; user-select: all; }
+.grok-motion-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-top: 14px; }
+.grok-motion-options button { min-width: 0; align-items: flex-start; justify-content: flex-start; gap: 8px; padding: 10px; border: 1px solid var(--grok-line); background: var(--grok-canvas); color: var(--grok-soft-ink); text-align: left; transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, transform 140ms ease; }
+.grok-motion-options button:hover { background: var(--grok-soft); color: var(--grok-ink); }
+.grok-motion-options button.is-selected { border-color: color-mix(in srgb, var(--grok-blue) 58%, var(--grok-line)); background: color-mix(in srgb, var(--grok-blue) 8%, var(--grok-canvas)); color: var(--grok-ink); }
+.grok-motion-options button > span { display: grid; min-width: 0; gap: 2px; }
+.grok-motion-options strong { font-size: 12px; font-weight: 620; }
+.grok-motion-options small { color: var(--grok-muted-ink); font-size: 10px; font-weight: 400; line-height: 1.3; }
+.grok-motion-options svg:last-child { margin-left: auto; flex: 0 0 auto; color: var(--grok-blue); }
+.grok-motion-preview { display: flex; min-height: 82px; align-items: center; gap: 12px; margin-top: 13px; padding: 10px 12px; border-radius: 10px; background: var(--grok-soft); }
+.grok-motion-preview .agent-avatar { width: 58px; height: 58px; }
+.grok-motion-preview > div { display: grid; min-width: 0; gap: 3px; }
+.grok-motion-preview strong { font-size: 12px; font-weight: 620; }
+.grok-motion-preview span { color: var(--grok-soft-ink); font-size: 11px; line-height: 1.4; }
+.grok-settings-hint { margin: 10px 0 0 !important; color: var(--grok-muted-ink) !important; font-size: 11px !important; line-height: 1.45 !important; }
+.grok-usage-empty { margin: 0; padding: 15px 18px 17px; color: var(--grok-muted-ink); font-size: 12px; line-height: 1.45; }
+.grok-usage-windows { display: grid; }
+.grok-usage-window { display: flex; min-height: 59px; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 18px; border-bottom: 1px solid var(--grok-line); }
+.grok-usage-window:last-child { border-bottom: 0; }
+.grok-usage-window > div { display: grid; min-width: 0; gap: 3px; }
+.grok-usage-window strong { font-size: 12px; font-weight: 620; }
+.grok-usage-window small { color: var(--grok-muted-ink); font-size: 10px; line-height: 1.35; }
+.grok-usage-window > span { flex: 0 0 auto; color: var(--grok-soft-ink); font-size: 12px; font-weight: 620; }
+.grok-account-summary { display: flex; align-items: center; gap: 10px; padding: 14px 18px 9px; }
+.grok-account-avatar { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--grok-soft); color: var(--grok-soft-ink); }
+.grok-account-summary > div { display: grid; min-width: 0; gap: 2px; }
+.grok-account-summary strong { overflow: hidden; font-size: 12px; font-weight: 620; text-overflow: ellipsis; white-space: nowrap; }
+.grok-account-summary small { color: var(--grok-muted-ink); font-size: 10px; }
+.grok-account-signout { width: calc(100% - 36px); min-height: 49px !important; justify-content: flex-start !important; margin: 4px 18px 0; padding: 6px 0 !important; border-top: 1px solid var(--grok-line) !important; border-radius: 0 !important; background: transparent !important; color: #a52d27 !important; text-align: left; }
+.grok-account-signout:hover { color: #bd3434 !important; }
+.grok-account-signout > span { display: grid; gap: 2px; }
+.grok-account-signout strong { font-size: 12px; font-weight: 620; }
+.grok-account-signout small { color: var(--grok-muted-ink); font-size: 10px; font-weight: 400; }
+.grok-account-settings .grok-form-error { margin: 7px 18px 0; }
+@media (max-width: 640px) { .grok-bot-settings input, .grok-bot-settings textarea, .grok-bot-settings select { font-size: 16px; } }
+@media (max-width: 640px) {
+  .grok-motion-options { grid-template-columns: 1fr; }
+  .grok-motion-options button { min-height: 48px; align-items: center; }
+  .grok-motion-preview .agent-avatar { width: 56px; height: 56px; }
+}
+

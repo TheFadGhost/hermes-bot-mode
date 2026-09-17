@@ -1,0 +1,22 @@
+[Unit]
+Description=Dad bot private desktop controller
+After=docker.service network.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/hermes-bot-mode/desktop
+EnvironmentFile=/etc/dad-bot-desktops.env
+ExecStart=/opt/hermes-bot-mode/desktop/.venv/bin/uvicorn supervisor:app --host 127.0.0.1 --port 9121
+Restart=on-failure
+NoNewPrivileges=true
+ProtectHome=read-only
+ReadWritePaths=/var/lib/hermes-bot-mode/desktops
+PrivateTmp=true
+MemoryMax=256M
+CPUQuota=10%
+
+[Install]
+WantedBy=multi-user.target
+

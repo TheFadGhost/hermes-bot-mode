@@ -1,0 +1,30 @@
+/* Motion traced from the supplied small Grok Bot recording. Idle is still. */
+.bot-glyph .bot-head-shine { opacity: 0; }
+.bot-glyph .bot-eyes { transform-origin: 50px 56px; }
+.agent-avatar-glyph.has-status > .bot-glyph { transform-origin: 50% 75%; }
+.agent-avatar-glyph.has-status.status-working > .bot-glyph { animation: bot-soft-work 2200ms ease-in-out infinite; }
+.agent-avatar-glyph.has-status.status-typing > .bot-glyph { animation: bot-soft-type 1450ms ease-in-out infinite; }
+.agent-avatar-glyph.has-status.status-tool > .bot-glyph { animation: bot-soft-work 2400ms ease-in-out infinite; }
+.agent-avatar-glyph.status-working .bot-eyes { animation: bot-eye-look 4400ms ease-in-out infinite; }
+.agent-avatar-glyph.status-typing .bot-eyes { animation: bot-eye-type 2900ms ease-in-out infinite; }
+.agent-avatar-glyph.status-tool .bot-eyes { animation: bot-eye-look 4800ms ease-in-out infinite; }
+.agent-avatar-glyph:is(.status-working,.status-typing,.status-tool) .bot-head-shine { animation: bot-head-light 5600ms ease-in-out infinite; }
+.agent-avatar-glyph:is(.status-working,.status-typing,.status-tool) .agent-avatar-status { background: #16be79; animation: none; box-shadow: none; }
+.agent-avatar-glyph.has-status .agent-avatar-status i { display: none; }
+.agent-avatar-glyph.status-complete > .bot-glyph { animation: bot-settle 260ms cubic-bezier(.22,1,.36,1) both; }
+.agent-avatar-glyph[data-motion="paused"] > .bot-glyph,
+.agent-avatar-glyph[data-motion="paused"] .bot-eyes,
+.agent-avatar-glyph[data-motion="paused"] .bot-head-shine { animation-play-state: paused; }
+@keyframes bot-soft-work { 0%,100% { transform: scale(1); } 38% { transform: translateY(1px) scale(1.025,.975); } 68% { transform: translateY(-.5px) scale(.99,1.015); } }
+@keyframes bot-soft-type { 0%,100% { transform: scale(1); } 45% { transform: translateY(.6px) scale(1.018,.985); } }
+@keyframes bot-eye-look { 0%,20%,100% { transform: translate(0,0); } 35%,55% { transform: translate(2px,-1px); } 78%,80% { transform: scaleY(.3); } 84% { transform: scaleY(1); } }
+@keyframes bot-eye-type { 0%,100% { transform: translateY(0); } 45% { transform: translateY(1px); } 72%,75% { transform: scaleY(.4); } 80% { transform: scaleY(1); } }
+@keyframes bot-head-light { 0%,64%,100% { opacity: 0; transform: translateX(0); } 68% { opacity: .55; } 83% { opacity: .55; transform: translateX(125px); } 84% { opacity: 0; transform: translateX(125px); } }
+@keyframes bot-settle { from { transform: scale(1.025,.98); } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="on"]) .agent-avatar-glyph.has-status > .bot-glyph,
+  :root:not([data-motion="on"]) .agent-avatar-glyph.has-status .bot-eyes,
+  :root:not([data-motion="on"]) .agent-avatar-glyph.has-status .bot-head-shine,
+  :root:not([data-motion="on"]) .agent-avatar-glyph.has-status .agent-avatar-status { animation: none; transform: none; }
+}
+

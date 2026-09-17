@@ -1,0 +1,5 @@
+interface:
+  display_name: "Grok UI Style"
+  short_description: "Simple, expressive Grok Bot-inspired messenger UI"
+  default_prompt: "Use $grok-ui-style to refine this messenger for a nontechnical user."
+
